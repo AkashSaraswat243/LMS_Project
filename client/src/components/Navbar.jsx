@@ -25,9 +25,10 @@ import { Separator } from "@radix-ui/react-dropdown-menu";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogoutUserMutation } from "@/features/api/authApi";
 import { toast } from "sonner";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  const user = true;
+  const { user } = useSelector((store) => store.auth);
   const [logoutUser, { data, isSuccess }] = useLogoutUserMutation();
   const navigate = useNavigate();
 
@@ -59,7 +60,7 @@ const Navbar = () => {
               <DropdownMenuTrigger asChild>
                 <Avatar>
                   <AvatarImage
-                    src="https://github.com/shadcn.png"
+                    src={user?.photoUrl || "https://github.com/shadcn.png"}
                     alt="@shadcn"
                   />
                   <AvatarFallback>CN</AvatarFallback>
@@ -82,15 +83,20 @@ const Navbar = () => {
                     Log out
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-
-                <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                {user.role === "instructor" && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                  </>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <div className="flex items-center gap-2">
-              <Button variant="outline">Login</Button>
-              <Button>Signup</Button>
+              <Button variant="outline" onClick={() => navigate("/login")}>
+                Login
+              </Button>
+              <Button onClick={() => navigate("/login")}>Signup</Button>
             </div>
           )}
           <DarkMode />
