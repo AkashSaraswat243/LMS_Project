@@ -83,7 +83,7 @@ export const logout = async (_, res) => {
         console.log(error);
         return res.status(500).json({
             success: false,
-            message: "failed to login"
+            message: "failed to logout"
         });
     }
 }

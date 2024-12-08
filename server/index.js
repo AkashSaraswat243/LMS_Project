@@ -3,13 +3,14 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import connectDB from "./database/db.js";
-import userRoute from "./routes/users.js";
+import userRoute from "./routes/user.js";
+import courseRoute from "./routes/course.js";
 
 dotenv.config({});
 connectDB();
 const app = express();
 
-const PORT = 8080;
+const PORT = process.env.PORT || 3000;
 
 //Default Middleware
 app.use(express.json());
@@ -21,6 +22,7 @@ app.use(cors({
 
 //APIS Middleware
 app.use("/api/v1/user", userRoute);
+app.use("/api/v1/course", courseRoute);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
